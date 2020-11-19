@@ -11,8 +11,6 @@ env:
 
 jobs:
   branch-build:
-    # Only run this on repositories in the 'spinnaker' org, not on forks.
-    if: startsWith(github.repository, 'spinnaker/')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -27,3 +25,5 @@ jobs:
             ${{ runner.os }}-gradle-
       - name: Build
         run: ./gradlew build --stacktrace
+      - name: Docker build
+        run: docker build . -t front50 -f Dockerfile.slim
