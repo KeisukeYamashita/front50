@@ -21,3 +21,11 @@ jobs:
           ${{ runner.os }}-gradle-
     - name: Build
       run: ./gradlew build
+    - name: Docker build
+        run: |
+          echo $GITHUB_TOKEN | docker login https://docker.pkg.github.com -u USERNAME --password-stdin
+          docker build . -t front50 -f Dockerfile.slim
+          docker tag front50 docker.pkg.github.com/KeisukeYamashita/front50
+          docker push docker.pkg.github.com/KeisukeYamashita/front50
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
