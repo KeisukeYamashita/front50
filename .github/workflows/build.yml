@@ -26,4 +26,10 @@ jobs:
       - name: Build
         run: ./gradlew build --stacktrace
       - name: Docker build
-        run: docker build . -t front50 -f Dockerfile.slim
+        run: |
+          echo $GITHUB_TOKEN | docker login https://docker.pkg.github.com -u USERNAME --password-stdin
+          docker build . -t front50 -f Dockerfile.slim
+          docker tag front50 docker.pkg.github.com/KeisukeYamashita/front50
+          docker push docker.pkg.github.com/KeisukeYamashita/front50
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
